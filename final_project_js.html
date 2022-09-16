@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS M Ridwan</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+      integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css"
+      integrity="sha384-X8QTME3FCg1DLb58++lPvsjbQoCT9bp3MsUU3grbIny/3ZwUJkRNO8NPW6zqzuW9"
+      crossorigin="anonymous"
+    />
+    <style>
+      #form-section {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-expand-lg bg-light">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a href="#" class="nav-link" onclick="showBeranda();">Beranda</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" onclick="showAdmin();">Admin</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div id="beranda">
+        <h1>Halaman Beranda</h1>
+        <hr />
+        <form
+          action=""
+          id="form-filter-product"
+          onsubmit="event.preventDefault();"
+        >
+          <div class="form-row">
+            <div class="col-3">
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="filter"
+                  name="filter"
+                  placeholder="Keyword.."
+                  onkeyup="cariData()"
+                />
+              </div>
+            </div>
+            <div class="col-6"></div>
+            <div class="col-2">
+              <div class="form-group">
+                <select
+                  name="urutkan"
+                  id="urutkan"
+                  class="form-control"
+                >
+                  <option value="nameAsc">Name A~Z</option>
+                  <option value="nameDesc">Name Z~A</option>
+                  <option value="priceHigh">Price Highest~Lowest</option>
+                  <option value="priceLow">Price Lowest~Highest</option>
+                </select>
+              </div>
+            </div>
+            <div class="col">
+              <button class="btn btn-primary" onclick="sortBy()">
+                Sort
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <br />
+
+        <div class="row" id="isi-product"></div>
+
+      </div>
+      <div style="display: none" id="admin">
+        <h1>Halaman admin product</h1>
+        <hr />
+        <button
+          class="btn btn-sm btn-info"
+          id="btn-add-data"
+          onclick="showFormSection()"
+        >
+          Add New Data
+        </button>
+        <br />
+
+        <div class="row" id="form-section">
+          <div class="col-md-6">
+            <form
+              action=""
+              id="form-data-product"
+              onsubmit="event.preventDefault();"
+            >
+            <input type="hidden" id="_id" name="_id" class="_id">
+              <select
+                class="form-control brand"
+                name="brand"
+                id="brand"
+                placeholder="Brand"
+                onchange="updateFields(this)"
+              >
+                <option value="">-Pilih-</option>
+                <option value="iPhone">iPhone</option>
+                <option value="Samsung">Samsung</option>
+                <option value="Xiaomi">Xiaomi</option>
+                <option value="Oppo">Oppo</option>
+                <option value="Vivo">Vivo</option>
+                <option value="Sony">Sony</option>
+              </select>
+              <span class="brand-error text-danger"></span>
+              <br />
+              <input
+                type="text"
+                class="form-control name"
+                name="name"
+                id="name"
+                placeholder="Name"
+                onchange="updateFields(this)"
+              />
+              <span class="name-error text-danger"></span>
+              <br />
+              <input
+                type="text"
+                class="form-control memory"
+                name="memory"
+                id="memory"
+                placeholder="Memory"
+                onchange="updateFields(this)"
+              />
+              <span class="memory-error text-danger"></span>
+              <br />
+              <input
+                type="number"
+                class="form-control price"
+                name="price"
+                id="price"
+                placeholder="Price"
+                onchange="updateFields(this)"
+              />
+              <span class="price-error text-danger"></span>
+              <br />
+              <input
+                type="file"
+                class="form-control picture"
+                name="picture"
+                placeholder="picture"
+              />
+              <span class="picture-error text-danger"></span>
+
+              <button class="btn btn-primary" id="btn-close-form">
+                <i class="fa fa-times"></i>
+              </button>
+              <button class="btn btn-success" onclick="saveData()">
+                Save Data
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <br /><br />
+
+        <table class="table table-bordered">
+          <thead>
+            <td>Number</td>
+            <td>Brand</td>
+            <td>Name</td>
+            <td>Memory</td>
+            <td>Price</td>
+            <td>#</td>
+          </thead>
+          <tbody id="data-product"></tbody>
+        </table>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.1/accounting.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+      crossorigin="anonymous"
+    ></script>
+    <script src="custom.js"></script>
+  </body>
+</html>
